@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 
 function App() {
   const [pokemons, setPokemons] = useState([])
   const [page, setPage] = useState(1)
 
-  const fetchPokemons = async (page=1) => {
+  const fetchPokemons = async (page = 1) => {
     const limit = 8
-    const offset = (page-1)*limit
+    const offset = (page - 1) * limit
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`)
     const data = await response.json()
     const results = data.results.map(result => {
@@ -49,10 +50,12 @@ function App() {
       <div className="pokemons">
         {pokemons.map(pokemon => {
           return (
-            <div className="pokemon">
-              <img src={pokemon.image} />
-              <h3 key={pokemon.name}>{pokemon.name}</h3>
-            </div>
+            <Link key={pokemon.id} to={`/pokemon/${pokemon.id}`}>
+              <div className="pokemon">
+                <img src={pokemon.image} />
+                <h3>{pokemon.name}</h3>
+              </div>
+            </Link>
           )
         })}
 
