@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import useAuth from "./hooks/useAuth"
 
 function App() {
   const [pokemons, setPokemons] = useState([])
   const [page, setPage] = useState(1)
+
+  const { logout } = useAuth()
+  const navigate = useNavigate()
 
   const fetchPokemons = async (page = 1) => {
     const limit = 8
@@ -44,9 +48,15 @@ function App() {
     fetchPokemons(page)
   }, [page])
 
+  const handleLogout = () => {
+    logout()
+    navigate('/login')
+  }
+
   return (
     <div className="pokemonList">
       <h1 className="title">Pokemon List</h1>
+      <button onClick={handleLogout}>Logout</button>
       <div className="pokemons">
         {pokemons.map(pokemon => {
           return (
